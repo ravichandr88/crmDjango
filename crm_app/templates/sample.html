@@ -1,0 +1,105 @@
+{% load static %}
+
+<!doctype html>
+<html>
+	<head>
+     
+    <meta charset="utf-8"/>
+        <title>Hello AngularJS</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+      <script src="{% static 'js/reporter.js' %}"></script>
+      <!-- <script src="reporter.js"></script> -->
+
+     
+      <style>.column {
+          float: left;
+          width: 33.33%;
+      }
+      
+      /* Clear floats after the columns */
+      .row:after {
+          content: "";
+          display: table;
+          clear: both;
+      }</style>
+      
+	</head>
+  {% verbatim %}
+	<body  ng-app="demo">
+    <div ng-controller='Hello' >
+    <br>
+    <p >{{selectedReportes}}</p>
+    <div class="row">
+
+
+<div class="column"> 
+  <h2>All Users</h2>
+   <label ng-repeat="userb in greeting.users">
+         
+    <input
+      type="button"
+      value="{{userb[0]}}"
+     ng-click="ChangeCurrentUser(userb)">
+    <br><br>
+  </label></div>
+
+
+<div class="column">
+  <h2>All Reporters</h2>
+        <label ng-repeat="edr in reporters">
+            <input
+              type="checkbox"
+              value="{{edr[0]}}"
+              ng-click="selectReporters(edr[0])"
+              
+            > {{edr[0]}}
+            <br><br>
+          </label>
+        
+       
+      </div>
+      <div class="column">
+        <h2>Selected Reporters for {{currentuser[0]}}</h2>
+          <label ng-repeat="usern in selectedreporters">
+         
+              <h5> {{usern}} </h5>
+            
+            </label>
+      </div>
+    </div>
+          <br>
+          <br>
+
+        
+          
+         
+          <button ng-click="sendData()" >Send</button>
+       
+      </div>
+     
+    </body>
+    
+<script>
+        $(document).ready(function(){
+            $("#data").hide();
+        
+            $("#send").click(function(){
+        
+               var $scope = getScope('Hello');
+               console.log($scope.greeting.users);
+                
+                $.post("http://localhost:8000/crm_app/reporterLoad/",
+                {
+                  data:JSON.stringify( angular.element(document.querySelector('[ng-controller="add"]')).scope().greeting.users)
+                },
+                function(data,status){
+                    // alert("Data: " + data + "\nStatus: " + status);
+                });
+            });
+        });
+</script>
+
+
+    {% endverbatim%}
+    </html>

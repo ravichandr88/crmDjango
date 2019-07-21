@@ -1,0 +1,126 @@
+from crm_app.models import User_Details as usrdtl
+
+from crm_app.models import Lead_Data as ldt
+
+from crm_app.models import Reporter_List as rplt
+
+usr1 = usrdtl(username='Srikanth',designation='Manager')
+usr2 = usrdtl(username='Jagapathi',designation='AstManager')
+usr3 = usrdtl(username='MaheshBabu',designation='AstManager')
+usr1.save()
+usr2.save()
+usr3.save()
+
+led1 = ldt(name='RaviChandra',phone_number='8095988717',user_detail=usr1,status='',address='',dob='2011-12-03')
+led2 = ldt(name='Siddesh',phone_number='8095988716',user_detail=usr1,status='',address='',dob='2011-12-03')
+led3 = ldt(name='Harshith',phone_number='8095988715',user_detail=usr3,status='',address='',dob='2011-12-03')
+led4 = ldt(name='Karthik',phone_number='8095988713',user_detail=usr2,status='',address='',dob='2011-12-03')
+led1.save()
+led2.save()
+led3.save()
+
+rplt1 = rplt(reporter_id = usr2,reporter_name='AstManager',report_to=usr1)
+rplt2 = rplt(reporter_id = usr3,reporter_name='AstManager',report_to=usr1)
+
+rplt1.save()
+rplt2.save()
+
+
+
+
+#1st code
+
+class User_Details(models.Model):
+    username = models.CharField(max_length = 20)
+    designation = models.CharField(max_length = 40)
+
+
+    def __str__(self):
+        return self.username
+
+
+
+
+
+class Lead_Data(models.Model):
+    name = models.CharField(max_length = 30)
+    phone_number = models.CharField(max_length = 10,blank=False,unique = True)
+    user_detail = models.ForeignKey(User_Details,related_name='lead_list',on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "name:{0} User_Detail_ID: {1}".format(self.name,self.user_detail)
+
+
+class Reporter_List(models.Model):
+    reporter_id = models.ForeignKey(User_Details,on_delete=models.CASCADE)
+    report_to = models.ForeignKey(User_Details,related_name='reporters_list',on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.reporter_id
+
+#2nd code
+
+
+class User_Details(models.Model):
+    username = models.CharField(max_length = 20)
+    designation = models.CharField(max_length = 40)
+
+
+    def __str__(self):
+        return self.username
+
+
+
+
+
+class Lead_Data(models.Model):
+    name = models.CharField(max_length = 30)
+    phone_number = models.CharField(max_length = 10,blank=False,unique = True)
+    user_detail = models.ForeignKey(User_Details,related_name='lead_list',on_delete=models.CASCADE)
+    status = models.CharField(max_length=20)
+    address = models.CharField(max_length=300)
+    dob = models.DateField(null=True, blank=True)
+    
+
+    def __str__(self):
+        return "name:{0} User_Detail_ID: {1}".format(self.name,self.user_detail)
+
+
+class Reporter_List(models.Model):
+    reporter_id = models.ForeignKey(User_Details,on_delete=models.CASCADE)
+    report_to = models.ForeignKey(User_Details,related_name='reporters_list',on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.reporter_id
+
+#3rd code
+
+
+class User_Details(models.Model):
+    username = models.CharField(max_length = 20)
+    designation = models.CharField(max_length = 40)
+
+
+    def __str__(self):
+        return self.username
+
+class Lead_Data(models.Model):
+    name = models.CharField(max_length = 30)
+    phone_number = models.CharField(max_length = 10,blank=False,unique = True)
+    user_detail = models.ForeignKey(User_Details,related_name='lead_list',on_delete=models.CASCADE)
+    status = models.CharField(max_length=20)
+    address = models.CharField(max_length=300)
+    dob = models.DateField(null=True, blank=True)
+    
+
+    def __str__(self):
+        return "name:{0} User_Detail_ID: {1}".format(self.name,self.user_detail)
+
+
+class Reporter_List(models.Model):
+    reporter_id = models.ForeignKey(User_Details,on_delete=models.CASCADE)
+    report_to = models.ForeignKey(User_Details,related_name='reporters_list',on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.reporter_id
+     
